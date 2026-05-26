@@ -1,0 +1,4 @@
+*.zip
+android-sdk/
+.gradle/
+node_modules/
