@@ -1,120 +1,92 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Quantum AI</title>
 
 <style>
 
-body{
-background:#0f172a;
-color:white;
-font-family:Arial;
+*{
 margin:0;
-padding:20px;
+padding:0;
+box-sizing:border-box;
 }
 
-h1{
+body{
+background:#020617;
+font-family:Arial;
+color:white;
+height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+.header{
+padding:20px;
 text-align:center;
+font-size:32px;
+font-weight:bold;
+background:#0f172a;
+border-bottom:1px solid #1e293b;
 }
 
 #chat{
-height:70vh;
-overflow:auto;
-border:1px solid #334155;
-border-radius:15px;
-padding:10px;
-margin-bottom:10px;
+flex:1;
+overflow-y:auto;
+padding:15px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.message{
+padding:14px;
+border-radius:18px;
+max-width:80%;
+word-wrap:break-word;
+font-size:16px;
+line-height:1.5;
+}
+
+.user{
+background:#2563eb;
+align-self:flex-end;
+border-bottom-right-radius:5px;
+}
+
+.ai{
 background:#111827;
+align-self:flex-start;
+border:1px solid #1e293b;
+border-bottom-left-radius:5px;
+}
+
+.typing{
+opacity:0.7;
+font-style:italic;
 }
 
 .input-area{
 display:flex;
+padding:15px;
 gap:10px;
+background:#0f172a;
+border-top:1px solid #1e293b;
 }
 
 input{
 flex:1;
 padding:15px;
 border:none;
-border-radius:10px;
+border-radius:14px;
+background:#111827;
+color:white;
 font-size:16px;
+outline:none;
 }
 
 button{
-padding:15px;
-border:none;
-border-radius:10px;
-background:#2563eb;
-color:white;
-font-size:16px;
-}
-
-.user{
-color:#38bdf8;
-}
-
-.ai{
-color:#4ade80;
-}
-
-</style>
-</head>
-
-<body>
-
-<h1>Quantum AI</h1>
-
-<div id="chat"></div>
-
-<div class="input-area">
-<input id="message" placeholder="Напиши сообщение">
-<button onclick="sendMessage()">Send</button>
-</div>
-
-<script>
-
-async function sendMessage(){
-
-const input = document.getElementById("message");
-const chat = document.getElementById("chat");
-
-const text = input.value;
-
-if(!text) return;
-
-chat.innerHTML += `<p class="user"><b>YOU:</b> ${text}</p>`;
-
-input.value = "";
-
-try{
-
-const response = await fetch("https://quantumai-app.onrender.com/chat",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-message:text
-})
-});
-
-const data = await response.json();
-
-chat.innerHTML += `<p class="ai"><b>AI:</b> ${data.response}</p>`;
-
-chat.scrollTop = chat.scrollHeight;
-
-}catch(e){
-
-chat.innerHTML += `<p style="color:red;">Ошибка подключения к серверу</p>`;
-
-}
-
-}
-
-</script>
-
-</body>
-</html>
+padding:
