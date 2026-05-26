@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum AI</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+margin:0;
+padding:20px;
+}
+
+h1{
+text-align:center;
+}
+
+#chat{
+height:70vh;
+overflow:auto;
+border:1px solid #334155;
+border-radius:15px;
+padding:10px;
+margin-bottom:10px;
+background:#111827;
+}
+
+.input-area{
+display:flex;
+gap:10px;
+}
+
+input{
+flex:1;
+padding:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+}
+
+button{
+padding:15px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+font-size:16px;
+}
+
+.user{
+color:#38bdf8;
+}
+
+.ai{
+color:#4ade80;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Quantum AI</h1>
+
+<div id="chat"></div>
+
+<div class="input-area">
+<input id="message" placeholder="Напиши сообщение">
+<button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+
+async function sendMessage(){
+
+const input = document.getElementById("message");
+const chat = document.getElementById("chat");
+
+const text = input.value;
+
+if(!text) return;
+
+chat.innerHTML += `<p class="user"><b>YOU:</b> ${text}</p>`;
+
+input.value = "";
+
+try{
+
+const response = await fetch("ТВОЙ_BACKEND_URL/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:text
+})
+});
+
+const data = await response.json();
+
+chat.innerHTML += `<p class="ai"><b>AI:</b> ${data.response}</p>`;
+
+chat.scrollTop = chat.scrollHeight;
+
+}catch(e){
+
+chat.innerHTML += `<p style="color:red;">Ошибка подключения к серверу</p>`;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
