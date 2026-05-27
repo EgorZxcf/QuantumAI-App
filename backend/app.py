@@ -57,6 +57,7 @@ def new_chat():
     return jsonify({
         "chat_id": chat.id
     })
+
 @app.route("/chats")
 def get_chats():
 
