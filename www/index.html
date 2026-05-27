@@ -49,7 +49,29 @@ align-self:flex-end;
 .ai{
 background:#111827;
 align-self:flex-start;
+line-height:1.6;
 }
+
+.ai pre{
+background:#020617;
+padding:12px;
+border-radius:12px;
+overflow-x:auto;
+margin-top:10px;
+}
+
+.ai code{
+font-family:monospace;
+color:#38bdf8;
+}
+
+.ai ul{
+padding-left:20px;
+}
+
+.ai h1,.ai h2,.ai h3{
+margin-top:10px;
+}	
 
 .input-area{
 display:flex;
@@ -76,6 +98,8 @@ font-size:16px;
 }
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
+</script>
 </head>
 
 <body>
@@ -127,7 +151,7 @@ const input = document.getElementById("message");
 
 const text = input.value.trim();
 
-if(!text) return;
+if(!text,) return;
 
 const userDiv = document.createElement("div");
 userDiv.className = "message user";
@@ -166,13 +190,17 @@ aiDiv.innerText = "";
 
 const typing = setInterval(() => {
 
-aiDiv.innerText += text[index];
+  if(index < words.length){
+
+aiDiv.innerHTML = marked.parse(
+(aiDiv.innerText || "") + words[index] + " "
+);
 
 index++;
 
 chat.scrollTop = chat.scrollHeight;
 
-if(index >= text.length){
+}else{
 
 clearInterval(typing);
 
