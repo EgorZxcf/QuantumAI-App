@@ -158,9 +158,31 @@ const data = await response.json();
 const aiDiv = document.createElement("div");
 aiDiv.className = "message ai";
 aiDiv.innerText = data.response;
+   let text = data.response;
+
+let index = 0;
+
+aiDiv.innerText = "";
+
+const typing = setInterval(() => {
+
+aiDiv.innerText += text[index];
+
+index++;
+
+chat.scrollTop = chat.scrollHeight;
+
+if(index >= text.length){
+
+clearInterval(typing);
+
+saveChat();
+
+}
+
+},15);
 
 chat.appendChild(aiDiv);
-  saveChat();
 
 chat.scrollTop = chat.scrollHeight;
 
