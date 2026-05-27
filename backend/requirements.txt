@@ -1,4 +1,5 @@
-flask
+kflask
 flask-cors
-openai
+flask-sqlalchemy
 gunicorn
+openai
