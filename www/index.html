@@ -98,8 +98,9 @@ font-size:16px;
 }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
 </script>
+
 </head>
 
 <body>
@@ -118,7 +119,8 @@ Quantum AI
 <script>
 
 const chat = document.getElementById("chat");
-  function saveChat(){
+
+function saveChat(){
 
 localStorage.setItem(
 "quantum_chat",
@@ -151,16 +153,25 @@ const input = document.getElementById("message");
 
 const text = input.value.trim();
 
-if(!text,) return;
+if(!text) return;
 
 const userDiv = document.createElement("div");
+
 userDiv.className = "message user";
+
 userDiv.innerText = text;
+
 chat.appendChild(userDiv);
 
 saveChat();
 
 input.value = "";
+
+const aiDiv = document.createElement("div");
+
+aiDiv.className = "message ai";
+
+chat.appendChild(aiDiv);
 
 try{
 
@@ -179,22 +190,15 @@ message:text
 
 const data = await response.json();
 
-const aiDiv = document.createElement("div");
-aiDiv.className = "message ai";
-aiDiv.innerText = data.response;
-   let text = data.response;
+let words = data.response.split(" ");
 
 let index = 0;
 
-aiDiv.innerText = "";
-
 const typing = setInterval(() => {
 
-  if(index < words.length){
+if(index < words.length){
 
-aiDiv.innerHTML = marked.parse(
-(aiDiv.innerText || "") + words[index] + " "
-);
+aiDiv.innerHTML += words[index] + " ";
 
 index++;
 
@@ -204,31 +208,24 @@ chat.scrollTop = chat.scrollHeight;
 
 clearInterval(typing);
 
+aiDiv.innerHTML = marked.parse(aiDiv.innerHTML);
+
 saveChat();
 
 }
 
-},15);
-
-chat.appendChild(aiDiv);
-
-chat.scrollTop = chat.scrollHeight;
+},20);
 
 }catch(error){
 
-const errorDiv = document.createElement("div");
+aiDiv.innerText = "Ошибка подключения";
 
-errorDiv.className = "message ai";
-
-errorDiv.innerText = "Ошибка подключения";
-
-chat.appendChild(errorDiv);
 saveChat();
+
 }
 
 }
 
 </script>
-
 </body>
 </html>
