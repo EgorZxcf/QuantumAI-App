@@ -1,4 +1,4 @@
-name: Android Release Build
+name: Android Build
 
 on:
   push:
@@ -7,9 +7,11 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -19,35 +21,25 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Setup Node
+      - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.SIGNING_KEY }}" | base64 -d > android/app/quantum-release-key.jks
-
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build Web
-        run: |
-          npx cap sync android
+      - name: Sync Capacitor
+        run: npx cap sync android
 
-      - name: Build AAB
+      - name: Build APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew bundleRelease
-        env:
-          MYAPP_UPLOAD_STORE_FILE: quantum-release-key.jks
-          MYAPP_UPLOAD_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          MYAPP_UPLOAD_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          MYAPP_UPLOAD_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ./gradlew assembleRelease
 
-      - name: Upload AAB
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: quantum-ai-release
-          path: android/app/build/outputs/bundle/release/app-release.aab
+          name: QuantumAI-APK
+          path: android/app/build/outputs/apk/release/app-release.apk
