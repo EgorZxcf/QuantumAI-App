@@ -94,6 +94,32 @@ Quantum AI
 <script>
 
 const chat = document.getElementById("chat");
+  function saveChat(){
+
+localStorage.setItem(
+"quantum_chat",
+chat.innerHTML
+);
+
+}
+
+function loadChat(){
+
+const saved = localStorage.getItem(
+"quantum_chat"
+);
+
+if(saved){
+
+chat.innerHTML = saved;
+
+chat.scrollTop = chat.scrollHeight;
+
+}
+
+}
+
+loadChat();
 
 async function sendMessage(){
 
@@ -107,6 +133,8 @@ const userDiv = document.createElement("div");
 userDiv.className = "message user";
 userDiv.innerText = text;
 chat.appendChild(userDiv);
+
+saveChat();
 
 input.value = "";
 
@@ -132,6 +160,7 @@ aiDiv.className = "message ai";
 aiDiv.innerText = data.response;
 
 chat.appendChild(aiDiv);
+  saveChat();
 
 chat.scrollTop = chat.scrollHeight;
 
@@ -144,7 +173,7 @@ errorDiv.className = "message ai";
 errorDiv.innerText = "Ошибка подключения";
 
 chat.appendChild(errorDiv);
-
+saveChat();
 }
 
 }
