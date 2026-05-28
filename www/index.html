@@ -118,6 +118,8 @@ Quantum AI
 
 <script>
 
+window.onload = async () => {
+
 let currentChatId = null;
 
 async function createChat(){
@@ -133,9 +135,11 @@ const data = await response.json();
 
 currentChatId = data.chat_id;
 
-console.log("CHAT ID:", currentChatId);
+console.log("Chat created:", currentChatId);
 
 }
+
+await createChat();
 
 const chat = document.getElementById("chat");
 
@@ -143,15 +147,7 @@ const input = document.getElementById("input");
 
 const sendBtn = document.querySelector("button");
 
-createChat();
-
-sendBtn.onclick = async () => {
-
-if(!currentChatId){
-
-await createChat();
-
-}
+sendBtn.addEventListener("click", async () => {
 
 const text = input.value;
 
@@ -189,8 +185,6 @@ chat_id: currentChatId
 }
 );
 
-console.log(response);
-
 const reader = response.body.getReader();
 
 const decoder = new TextDecoder();
@@ -209,9 +203,11 @@ chat.scrollTop = chat.scrollHeight;
 
 }
 
+if(typeof marked !== "undefined"){
+
 aiDiv.innerHTML = marked.parse(aiDiv.innerHTML);
 
-saveChat();
+}
 
 }catch(error){
 
@@ -221,8 +217,11 @@ aiDiv.innerHTML = "Error";
 
 }
 
+});
+
 };
 
 </script>
+
 </body>
 </html>
