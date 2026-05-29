@@ -118,6 +118,7 @@ Quantum AI
 
 <script>
 
+
 window.onload = async function(){
 
 const chat = document.getElementById("chat");
@@ -151,7 +152,7 @@ sendBtn.addEventListener("click", async function(){
 
 const text = input.value;
 
-if(!text) return;
+if(text.trim() === "") return;
 
 const userDiv = document.createElement("div");
 
@@ -180,7 +181,7 @@ headers:{
 },
 body:JSON.stringify({
 message:text,
-chat_id: currentChatId
+chat_id:currentChatId
 })
 }
 );
@@ -216,5 +217,6 @@ aiDiv.innerHTML = "Error";
 };
 
 </script>
+
 </body>
 </html>
