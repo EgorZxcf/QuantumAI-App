@@ -99,10 +99,9 @@ def chat():
     data = request.json
 
     message = data.get("message")
-
     chat_id = data.get("chat_id")
 
-    # save user message
+    # Сохраняем сообщение пользователя
     user_message = Message(
         chat_id=chat_id,
         role="user",
@@ -110,10 +109,9 @@ def chat():
     )
 
     db.session.add(user_message)
-
     db.session.commit()
 
-    # get history
+    # Получаем историю
     history = Message.query.filter_by(
         chat_id=chat_id
     ).order_by(
@@ -123,48 +121,37 @@ def chat():
     messages = []
 
     for msg in reversed(history):
-
         messages.append({
             "role": msg.role,
             "content": msg.content
         })
 
-    def generate():
+    try:
 
-        full_answer = ""
-
-        stream = client.chat.completions.create(
+        response = client.chat.completions.create(
             model="openai/gpt-3.5-turbo",
-            messages=messages,
-            stream=True
+            messages=messages
         )
 
-        for chunk in stream:
+        answer = response.choices[0].message.content
 
-            if chunk.choices[0].delta.content:
-
-                text = chunk.choices[0].delta.content
-
-                full_answer += text
-
-                yield text
-
-        # save assistant response
+        # Сохраняем ответ ИИ
         ai_message = Message(
             chat_id=chat_id,
             role="assistant",
-            content=full_answer
+            content=answer
         )
 
         db.session.add(ai_message)
-
         db.session.commit()
 
-    return Response(
-        generate(),
-        mimetype="text/plain"
-    )
+        return answer
 
+    except Exception as e:
+
+        return jsonify({
+            "error": str(e)
+        }), 500
 # ======================
 # START
 # ======================
