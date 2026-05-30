@@ -98,30 +98,31 @@ def chat():
 
     data = request.json
 
-    message = data.get("message")
-    chat_id = data.get("chat_id")
+message = data.get("message")
+chat_id = data.get("chat_id")
 
-    # Сохраняем сообщение пользователя
-    user_message = Message(
-        chat_id=chat_id,
-        role="user",
-        content=message
-    )
+chat = Chat.query.get(chat_id)
 
-    db.session.add(user_message)
-    db.session.commit()
-
-    chat = Chat.query.get(chat_id)
-
-if chat.title == "New Chat":
+if chat and chat.title == "New Chat":
     chat.title = message[:30]
     db.session.commit()
-    # Получаем историю
-    history = Message.query.filter_by(
-        chat_id=chat_id
-    ).order_by(
-        Message.id.desc()
-    ).limit(10).all()
+
+# Сохраняем сообщение пользователя
+user_message = Message(
+    chat_id=chat_id,
+    role="user",
+    content=message
+)
+
+db.session.add(user_message)
+db.session.commit()
+
+# Получаем историю
+history = Message.query.filter_by(
+    chat_id=chat_id
+).order_by(
+    Message.id.desc()
+).limit(10).all()
 
     messages = []
 
