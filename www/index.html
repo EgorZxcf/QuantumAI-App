@@ -146,7 +146,11 @@ console.log(currentChatId);
 
 }
 
-await createChat();
+try {
+  await createChat();
+} catch (e) {
+  console.log("createChat error", e);
+}
 
 sendBtn.addEventListener("click", async function(){
 
@@ -170,7 +174,7 @@ aiDiv.className = "ai";
 
 chat.appendChild(aiDiv);
 
-try{
+try {
 
 const response = await fetch(
 "https://quantumai-app.onrender.com/chat",
@@ -186,29 +190,17 @@ chat_id:currentChatId
 }
 );
 
-const reader = response.body.getReader();
+const result = await response.text();
 
-const decoder = new TextDecoder();
-
-while(true){
-
-const {done, value} = await reader.read();
-
-if(done) break;
-
-const chunk = decoder.decode(value);
-
-aiDiv.innerHTML += chunk;
+aiDiv.innerHTML = result;
 
 chat.scrollTop = chat.scrollHeight;
-
-}
 
 }catch(error){
 
 console.log(error);
 
-aiDiv.innerHTML = "Error";
+aiDiv.innerHTML = "Error: " + error;
 
 }
 
