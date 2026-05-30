@@ -96,6 +96,38 @@ background:#2563eb;
 color:white;
 font-size:16px;
 }
+body{
+    margin:0;
+    display:flex;
+    height:100vh;
+    background:#020617;
+    color:white;
+    font-family:Arial;
+}
+
+.sidebar{
+    width:260px;
+    background:#0f172a;
+    padding:10px;
+    overflow-y:auto;
+}
+
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.chat-btn{
+    width:100%;
+    margin-bottom:8px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
 
 </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
@@ -116,8 +148,9 @@ Quantum AI
 <div id="chatList" style="
 padding:10px;
 background:#111827;
-max-height:150px;
-overflow-y:auto;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
 ">
 </div>
 
@@ -162,7 +195,13 @@ async function loadChats(){
         btn.innerText =
         chatItem.title + " #" + chatItem.id;
 
-        btn.style.margin = "5px";
+        btn.style.padding = "15px";
+btn.style.border = "none";
+btn.style.borderRadius = "15px";
+btn.style.background = "#2563eb";
+btn.style.color = "white";
+btn.style.fontSize = "18px";
+btn.style.cursor = "pointer";
 
 btn.onclick = async () => {
 
