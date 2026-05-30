@@ -111,6 +111,11 @@ def chat():
     db.session.add(user_message)
     db.session.commit()
 
+    chat = Chat.query.get(chat_id)
+
+if chat.title == "New Chat":
+    chat.title = message[:30]
+    db.session.commit()
     # Получаем историю
     history = Message.query.filter_by(
         chat_id=chat_id
