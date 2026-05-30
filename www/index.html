@@ -105,8 +105,20 @@ font-size:16px;
 
 <body>
 
+<div style="padding:10px;background:#0f172a;">
+    <button id="newChatBtn">Новый чат</button>
+</div>
+
 <div class="header">
 Quantum AI
+</div>
+
+<div id="chatList" style="
+padding:10px;
+background:#111827;
+max-height:150px;
+overflow-y:auto;
+">
 </div>
 
 <div id="chat"></div>
@@ -129,6 +141,39 @@ const sendBtn = document.getElementById("send");
 
 let currentChatId = null;
 
+async function loadChats(){
+
+    const response = await fetch(
+        "https://quantumai-app.onrender.com/chats"
+    );
+
+    const chats = await response.json();
+
+    const chatList =
+        document.getElementById("chatList");
+
+    chatList.innerHTML = "";
+
+    chats.reverse().forEach(chat => {
+
+        const btn =
+            document.createElement("button");
+
+        btn.innerText =
+            chat.title + " #" + chat.id;
+
+        btn.style.margin = "5px";
+
+        btn.onclick = () => {
+            currentChatId = chat.id;
+        };
+
+        chatList.appendChild(btn);
+
+    });
+
+}
+
 async function createChat(){
 
 const response = await fetch(
@@ -148,6 +193,7 @@ console.log(currentChatId);
 
 try {
   await createChat();
+await loadChats();
 } catch (e) {
   console.log("createChat error", e);
 }
@@ -207,7 +253,15 @@ aiDiv.innerHTML = "Error: " + error;
 });
 
 };
+document
+.getElementById("newChatBtn")
+.addEventListener("click", async () => {
 
+    await createChat();
+
+    await loadChats();
+
+});
 </script>
 
 </body>
