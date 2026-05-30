@@ -104,7 +104,7 @@ def chat():
 
     if chat and chat.title == "New Chat":
       chat.title = message[:25] + "..." if len(message) > 25 else message
-        db.session.commit()
+      db.session.commit()
 
     user_message = Message(
         chat_id=chat_id,
