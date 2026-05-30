@@ -103,7 +103,7 @@ def chat():
     chat = Chat.query.get(chat_id)
 
     if chat and chat.title == "New Chat":
-        chat.title = message[:30]
+      chat.title = message[:25] + "..." if len(message) > 25 else message
         db.session.commit()
 
     user_message = Message(
@@ -174,6 +174,23 @@ def get_messages(chat_id):
         })
 
     return jsonify(result)
+@app.route("/delete_chat/<int:chat_id>", methods=["DELETE"])
+def delete_chat(chat_id):
+
+    Message.query.filter_by(
+        chat_id=chat_id
+    ).delete()
+
+    Chat.query.filter_by(
+        id=chat_id
+    ).delete()
+
+    db.session.commit()
+
+    return jsonify({
+        "success": True
+    })
+
 # ======================
 # START
 # ======================

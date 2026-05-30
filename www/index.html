@@ -187,33 +187,54 @@ async function loadChats(){
 
     chatList.innerHTML = "";
 
-     chats.reverse().forEach(chatItem => {
+chats.reverse().forEach(chatItem => {
 
-        const btn =
-            document.createElement("button");
+    const btn =
+        document.createElement("button");
 
-        btn.innerText =
+    btn.innerText =
         chatItem.title + " #" + chatItem.id;
 
-        btn.style.padding = "15px";
-btn.style.border = "none";
-btn.style.borderRadius = "15px";
-btn.style.background = "#2563eb";
-btn.style.color = "white";
-btn.style.fontSize = "18px";
-btn.style.cursor = "pointer";
+    btn.onclick = async () => {
 
-btn.onclick = async () => {
+        currentChatId = chatItem.id;
 
-     currentChatId = chatItem.id;
+        await loadMessages(chatItem.id);
 
-     await loadMessages(chatItem.id);
+    };
 
-        };
+    const deleteBtn =
+        document.createElement("button");
 
-        chatList.appendChild(btn);
+    deleteBtn.innerText = "🗑";
 
-    });
+    deleteBtn.style.marginLeft = "5px";
+
+    deleteBtn.onclick = async (e) => {
+
+        e.stopPropagation();
+
+        await fetch(
+            `https://quantumai-app.onrender.com/delete_chat/${chatItem.id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        await loadChats();
+
+    };
+
+    const row =
+        document.createElement("div");
+
+    row.appendChild(btn);
+
+    row.appendChild(deleteBtn);
+
+    chatList.appendChild(row);
+
+});
 
 }
 
@@ -282,6 +303,8 @@ chat_id:currentChatId
 const result = await response.text();
 
 aiDiv.innerHTML = result;
+
+await loadChats();
 
 chat.scrollTop = chat.scrollHeight;
 
