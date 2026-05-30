@@ -21,7 +21,7 @@ client = OpenAI(
 # DATABASE MODELS
 # ======================
 
-class Chat(db.Model):
+lass Chat(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
