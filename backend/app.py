@@ -92,37 +92,34 @@ def get_chats():
 # ======================
 # CHAT
 # ======================
-
 @app.route("/chat", methods=["POST"])
 def chat():
 
     data = request.json
 
-message = data.get("message")
-chat_id = data.get("chat_id")
+    message = data.get("message")
+    chat_id = data.get("chat_id")
 
-chat = Chat.query.get(chat_id)
+    chat = Chat.query.get(chat_id)
 
-if chat and chat.title == "New Chat":
-    chat.title = message[:30]
+    if chat and chat.title == "New Chat":
+        chat.title = message[:30]
+        db.session.commit()
+
+    user_message = Message(
+        chat_id=chat_id,
+        role="user",
+        content=message
+    )
+
+    db.session.add(user_message)
     db.session.commit()
 
-# Сохраняем сообщение пользователя
-user_message = Message(
-    chat_id=chat_id,
-    role="user",
-    content=message
-)
-
-db.session.add(user_message)
-db.session.commit()
-
-# Получаем историю
-history = Message.query.filter_by(
-    chat_id=chat_id
-).order_by(
-    Message.id.desc()
-).limit(10).all()
+    history = Message.query.filter_by(
+        chat_id=chat_id
+    ).order_by(
+        Message.id.desc()
+    ).limit(10).all()
 
     messages = []
 
@@ -141,7 +138,6 @@ history = Message.query.filter_by(
 
         answer = response.choices[0].message.content
 
-        # Сохраняем ответ ИИ
         ai_message = Message(
             chat_id=chat_id,
             role="assistant",
@@ -158,6 +154,8 @@ history = Message.query.filter_by(
         return jsonify({
             "error": str(e)
         }), 500
+
+
 @app.route("/messages/<int:chat_id>")
 def get_messages(chat_id):
 
