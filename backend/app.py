@@ -152,6 +152,24 @@ def chat():
         return jsonify({
             "error": str(e)
         }), 500
+@app.route("/messages/<int:chat_id>")
+def get_messages(chat_id):
+
+    messages = Message.query.filter_by(
+        chat_id=chat_id
+    ).order_by(
+        Message.id
+    ).all()
+
+    result = []
+
+    for msg in messages:
+        result.append({
+            "role": msg.role,
+            "content": msg.content
+        })
+
+    return jsonify(result)
 # ======================
 # START
 # ======================
