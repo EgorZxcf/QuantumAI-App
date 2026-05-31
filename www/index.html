@@ -391,6 +391,33 @@ aiDiv.innerHTML = marked.parse(result, {
 });
 hljs.highlightAll();
 
+aiDiv.querySelectorAll("pre").forEach(pre => {
+
+    const button = document.createElement("button");
+
+    button.innerText = "📋 Копировать";
+
+    button.style.float = "right";
+    button.style.marginBottom = "5px";
+
+    button.onclick = () => {
+
+        navigator.clipboard.writeText(
+            pre.querySelector("code").innerText
+        );
+
+        button.innerText = "✅ Скопировано";
+
+        setTimeout(() => {
+            button.innerText = "📋 Копировать";
+        }, 2000);
+
+    };
+
+    pre.insertBefore(button, pre.firstChild);
+
+});
+
 await loadChats();
 
 chat.scrollTop = chat.scrollHeight;
@@ -440,7 +467,32 @@ hljs.highlightAll();
 }else{
     div.innerText = msg.content;
 }
+aiDiv.querySelectorAll("pre").forEach(pre => {
 
+    const button = document.createElement("button");
+
+    button.innerText = "📋 Копировать";
+
+    button.style.float = "right";
+    button.style.marginBottom = "5px";
+
+    button.onclick = () => {
+
+        navigator.clipboard.writeText(
+            pre.querySelector("code").innerText
+        );
+
+        button.innerText = "✅ Скопировано";
+
+        setTimeout(() => {
+            button.innerText = "📋 Копировать";
+        }, 2000);
+
+    };
+
+    pre.insertBefore(button, pre.firstChild);
+
+});
         chat.appendChild(div);
 
     });
