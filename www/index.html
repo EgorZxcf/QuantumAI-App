@@ -163,6 +163,15 @@ body{
     opacity:0.9;
 }
 
+.ai pre{
+    max-width:100%;
+    overflow-x:auto;
+    white-space:pre;
+}
+
+.ai code{
+    white-space:pre;
+}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
 </script>
@@ -337,7 +346,9 @@ chat_id:currentChatId
 
 const result = await response.text();
 
-aiDiv.innerHTML = marked.parse(result);
+aiDiv.innerHTML = marked.parse(result, {
+    breaks: true
+});
 
 await loadChats();
 
