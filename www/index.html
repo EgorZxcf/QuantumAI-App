@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quantum AI</title>
+<head>
+<meta charset="UTF-8">
+<title>Quantum AI</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+</head>
 
 <style>
 
@@ -172,6 +182,11 @@ body{
 .ai code{
     white-space:pre;
 }
+.ai pre{
+    max-height:400px;
+    overflow:auto;
+}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
 </script>
@@ -349,6 +364,7 @@ const result = await response.text();
 aiDiv.innerHTML = marked.parse(result, {
     breaks: true
 });
+hljs.highlightAll();
 
 await loadChats();
 
@@ -395,6 +411,7 @@ async function loadMessages(chatId){
 
         if(msg.role === "assistant"){
     div.innerHTML = marked.parse(msg.content);
+hljs.highlightAll();
 }else{
     div.innerText = msg.content;
 }

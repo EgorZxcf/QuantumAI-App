@@ -128,13 +128,21 @@ def chat():
             "role": msg.role,
             "content": msg.content
         })
+messages.insert(0, {
+    "role": "system",
+    "content": """
+Отвечай в Markdown.
 
+Если приводишь код, весь код без исключений помещай внутрь одного блока:
+
+```cpp
+код
+"""
+})
     try:
-
-        response = client.chat.completions.create(
+            response = client.chat.completions.create(
             model="openai/gpt-3.5-turbo",
             messages=messages
-        )
 
         answer = response.choices[0].message.content
 
