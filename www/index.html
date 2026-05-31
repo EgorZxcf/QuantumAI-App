@@ -183,10 +183,30 @@ body{
     white-space:pre;
 }
 .ai pre{
-    max-height:400px;
-    overflow:auto;
+    overflow-x:auto;
+    overflow-y:visible;
+}
+pre {
+    background: #050b24;
+    padding: 15px;
+    border-radius: 15px;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 10px 0;
 }
 
+code {
+    font-family: monospace;
+    font-size: 14px;
+}
+
+pre code {
+    display: block;
+}
+
+.message {
+    word-wrap: break-word;
+}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
 </script>
