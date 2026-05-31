@@ -128,24 +128,19 @@ def chat():
             "role": msg.role,
             "content": msg.content
         })
-messages.insert(0, {
-    "role": "system",
-    "content": """
-Отвечай в Markdown.
+    messages.insert(0, {
+        "role": "system",
+        "content": "Отвечай в Markdown. Если приводишь код, весь код помещай в блок кода. Не пиши код обычным текстом."
+    })
 
-Если приводишь код, весь код без исключений помещай внутрь одного блока:
-
-```cpp
-код
-"""
-})
     try:
-            response = client.chat.completions.create(
+
+        response = client.chat.completions.create(
             model="openai/gpt-3.5-turbo",
             messages=messages
+        )
 
         answer = response.choices[0].message.content
-
         ai_message = Message(
             chat_id=chat_id,
             role="assistant",
@@ -162,8 +157,6 @@ messages.insert(0, {
         return jsonify({
             "error": str(e)
         }), 500
-
-
 @app.route("/messages/<int:chat_id>")
 def get_messages(chat_id):
 
