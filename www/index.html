@@ -206,6 +206,10 @@ pre code {
 .message {
     word-wrap: break-word;
 }
+.typing{
+    opacity:0.8;
+    font-style:italic;
+}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
 </script>
@@ -361,6 +365,8 @@ aiDiv.className = "ai";
 
 chat.appendChild(aiDiv);
 
+aiDiv.innerHTML =
+'<div class="typing">● ● ● Quantum AI печатает...</div>';
 try {
 
 const response = await fetch(
