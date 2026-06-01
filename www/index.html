@@ -254,7 +254,13 @@ const input = document.getElementById("input");
 
 const sendBtn = document.getElementById("send");
 const stopBtn = document.getElementById("stop");
+stopBtn.addEventListener("click", () => {
 
+    if(controller){
+        controller.abort();
+    }
+
+});
 let currentChatId = null;
 let controller = null;
 
