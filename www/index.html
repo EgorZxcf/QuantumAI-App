@@ -399,7 +399,7 @@ const result = await response.text();
 aiDiv.innerHTML = marked.parse(result, {
     breaks: true
 });
-hljs.highlightAll();
+// hljs.highlightAll();
 
 div.querySelectorAll("pre").forEach(pre => {
 
@@ -476,7 +476,7 @@ async function loadMessages(chatId){
 
         if(msg.role === "assistant"){
     div.innerHTML = marked.parse(msg.content);
-hljs.highlightAll();
+// hljs.highlightAll();
 }else{
     div.innerText = msg.content;
 }
